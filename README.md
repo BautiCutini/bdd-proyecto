@@ -40,29 +40,9 @@ Contiene cada producto asociado a una orden, junto con cantidad y precio.
 
 # 2. Normalización (hasta 3NF)
 
-El modelo fue construido aplicando las primeras tres formas normales:
+El modelo respeta las primeras tres formas normales:
 
 ---
-
-## ✔ **1NF – Primera Forma Normal**
-- No existen atributos multivaluados ni compuestos.
-- Todas las columnas son atómicas.
-- No existen listas dentro de un campo.
-- Los detalles de una orden se manejan en una tabla independiente (`detalles_orden`) en lugar de almacenar múltiples productos dentro de un mismo registro de orden.
-
----
-
-## ✔ **2NF – Segunda Forma Normal**
-Para las tablas con **clave primaria simple**, no existen dependencias parciales.  
-Para la tabla **detalles_orden**, cuya clave es compuesta:
-
-- Los atributos `cantidad` y `precio_unitario` dependen de *ambos* campos de la clave (`id_orden`, `id_producto`), por lo que no violan 2NF.
-- No existe ningún atributo que dependa solo de una parte de la clave.
-
----
-
-## ✔ **3NF – Tercera Forma Normal**
-No hay dependencias transitivas.
 
 Ejemplos:
 
@@ -70,16 +50,12 @@ Ejemplos:
 - En `ordenes`, toda la información del cliente está en `clientes`.
 - En `detalles_orden`, no se guarda el nombre del producto, solo su precio histórico.
 
-Eliminar transitividades evita redundancia y asegura consistencia en todo el sistema.
 
 ---
 
-# 3. Integridad Referencial y Operaciones en Cascada
+# 3. Operaciones en cascada, transacciones,manejo de errores,indices y procedimientos almacenados
 
-El modelo utiliza claves foráneas con reglas de actualización y borrado, manteniendo coherencia en los datos:
+El modelo cuenta con todos los mencionados anteriormente para garantizar la consistencia de los datos en operaciones críticas, prevenir errores de consistencia, manejar operaciones complejas y mejorar el rendimiento de las consultas mas frecuentes (en este caso realizamos indice unicamente para productos).
 
-### ✔ Productos → Categorías
-```sql
-ON UPDATE CASCADE
-ON DELETE RESTRICT
+
 
